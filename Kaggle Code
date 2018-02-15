@@ -1,0 +1,20 @@
+import pandas as pd
+import sqlite3
+%matplotlib inline
+# Read sqlite query results into a pandas DataFrame
+
+def qry(q, connection = sqlite3.connect("../input/database.sqlite")):
+    df = pd.read_sql_query(q, connection)
+    connection.close
+    return df
+    
+qry("SELECT count(*) FROM ascent")
+
+qry("SELECT * FROM sqlite_master")
+
+tables = ["user","method", "grade", "ascent"]
+all_columns = [qry("PRAGMA table_info(" + x + ");") for x in tables]
+all_columns = pd.concat(all_columns, keys = tables)
+all_columns
+
+pd.concat([qry("SELECT COUNT(*) as 'ROWCOUNT' FROM " + x) for x in tables], keys = tables)
