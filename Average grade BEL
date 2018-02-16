@@ -1,0 +1,11 @@
+
+query = "SELECT A.avg, grade.fra_routes, A.first_name, A.last_name, A.country, A.height, A.weight, A.started FROM "
+query += "(SELECT ROUND(avg(grade_id),0) as avg, user.first_name, user.last_name, user.country, user.height, user.weight, user.started "
+query += "FROM ascent "
+query += "LEFT JOIN user " 
+query += "ON ascent.user_id = user.id "
+query += "WHERE user.country='BEL' "
+query += "GROUP BY user_id "
+query += "ORDER BY avg DESC) as A "
+query += "LEFT JOIN grade ON A.avg=grade.id"
+qry(query)
